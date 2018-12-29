@@ -1,6 +1,6 @@
 # home-security
 Home security project with Rasberry Pi3 Model B+
-
+Using Camera Module for enhanced security when not at Home 
 
 ## Setup
 
