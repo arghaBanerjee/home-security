@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 import base64
 import os
 from email.mime.audio import MIMEAudio
@@ -15,6 +13,7 @@ from googleapiclient import errors
 from oauth2client import client
 from oauth2client import tools
 from oauth2client.file import Storage
+from configparser import ConfigParser
 import logging
 
 try:
@@ -56,15 +55,8 @@ def get_credentials():
             credentials = tools.run_flow(flow, store, flags)
         else:  # Needed only for compatibility with Python 2.6
             credentials = tools.run(flow, store)
-        print('Storing credentials to ' + credential_path)
+        logging.debug("Storing credentials to {}".format(credential_path))
     return credentials
-
-
-to = 'banerjee.argha@gmail.com'
-sender = 'Pi3Photo'
-subject = 'Photo Alert!'
-message_text = 'Hello, this is a photo alert!'
-user_id = 'me'
 
 def create_message(sender, to, subject, message_text):
     """Create a message for an email.
@@ -137,11 +129,6 @@ def create_message_with_attachment(sender, to, subject, message_text, file_dir,
 
   return {'raw': (base64.urlsafe_b64encode(message.as_bytes()).decode())}
 
-def parse_args(arg_input=None):
-    parser = argparse.ArgumentParser(description='Upload photos to Google Photos.')
-    parser.add_argument('photos', metavar='photo',type=str, nargs='*',
-                    help='filename of a photo to upload')
-    return parser.parse_args(arg_input)
 
 def send(filename):
     """Shows basic usage of the Gmail API.
@@ -155,8 +142,16 @@ def send(filename):
 
     current_dirpath = os.getcwd()
 
+    parser = ConfigParser()
+    parser.read('configuration.properties')
+
+    to = parser.get('gmail', 'to')
+    sender = parser.get('gmail', 'sender')
+    subject = parser.get('gmail', 'subject')
+    message_text = parser.get('gmail', 'message_text')
+    user_id = parser.get('gmail', 'user_id')
+
     msg = create_message_with_attachment(sender,to,subject,message_text,current_dirpath, filename)
     message = (service.users().messages().send(userId=user_id, body=msg)
                .execute())
-    print('Message Id: {}'.format(message['id']))
-    logging.info("Email Message Id:  -- \'{}\'".format(message['id']))
+    logging.info("Email Sent! Message Id:  -- \'{}\'".format(message['id']))

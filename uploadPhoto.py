@@ -1,16 +1,11 @@
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import AuthorizedSession
 from google.oauth2.credentials import Credentials
+from configparser import ConfigParser
 import json
 import os.path
 import argparse
 import logging
-
-def parse_args(arg_input=None):
-    parser = argparse.ArgumentParser(description='Upload photos to Google Photos.')
-    parser.add_argument('photos', metavar='photo',type=str, nargs='*',
-                    help='filename of a photo to upload')
-    return parser.parse_args(arg_input)
 
 
 def auth(scopes):
@@ -182,7 +177,9 @@ def fileUpload(filename):
     auth_file = os.path.join(credential_dir,
                                    'photo-credential.json')
 
-    album_name = 'Pi3Upload'
+    parser = ConfigParser()
+    parser.read('configuration.properties')
+    album_name = parser.get('google_photos', 'album_name')
 
     session = get_authorized_session(auth_file)
 
