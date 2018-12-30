@@ -102,13 +102,13 @@ def create_or_retrieve_album(session, album_title):
 
 # Find albums created by this app to see if one matches album_title
 
-    for a in getAlbums(session, True):
+    for a in getAlbums(session, False):
         if a["title"].lower() == album_title.lower():
             album_id = a["id"]
             logging.info("Uploading into EXISTING photo album -- \'{0}\'".format(album_title))
             return album_id
 
-# No matches, create new album
+    # No matches, create new album
 
     create_album_body = json.dumps({"album":{"title": album_title}})
     #print(create_album_body)
@@ -123,7 +123,7 @@ def create_or_retrieve_album(session, album_title):
         logging.error("Could not find or create photo album '\{0}\'. Server Response: {1}".format(album_title, resp))
         return None
 
-def upload_photos(session, photo_file_list, album_name):
+def upload_photos(session, photo_file_name, album_name):
 
     album_id = create_or_retrieve_album(session, album_name) if album_name else None
 
@@ -134,40 +134,37 @@ def upload_photos(session, photo_file_list, album_name):
     session.headers["Content-type"] = "application/octet-stream"
     session.headers["X-Goog-Upload-Protocol"] = "raw"
 
-    for photo_file_name in photo_file_list:
+    try:
+        photo_file = open(photo_file_name, mode='rb')
+        photo_bytes = photo_file.read()
+    except OSError as err:
+        logging.error("Could not read file \'{0}\' -- {1}".format(photo_file_name, err))
 
-            try:
-                photo_file = open(photo_file_name, mode='rb')
-                photo_bytes = photo_file.read()
-            except OSError as err:
-                logging.error("Could not read file \'{0}\' -- {1}".format(photo_file_name, err))
-                continue
+    session.headers["X-Goog-Upload-File-Name"] = os.path.basename(photo_file_name)
 
-            session.headers["X-Goog-Upload-File-Name"] = os.path.basename(photo_file_name)
+    logging.info("Uploading photo -- \'{}\'".format(photo_file_name))
 
-            logging.info("Uploading photo -- \'{}\'".format(photo_file_name))
+    upload_token = session.post('https://photoslibrary.googleapis.com/v1/uploads', photo_bytes)
 
-            upload_token = session.post('https://photoslibrary.googleapis.com/v1/uploads', photo_bytes)
+    if (upload_token.status_code == 200) and (upload_token.content):
 
-            if (upload_token.status_code == 200) and (upload_token.content):
+        create_body = json.dumps({"albumId":album_id, "newMediaItems":[{"description":"","simpleMediaItem":{"uploadToken":upload_token.content.decode()}}]}, indent=4)
 
-                create_body = json.dumps({"albumId":album_id, "newMediaItems":[{"description":"","simpleMediaItem":{"uploadToken":upload_token.content.decode()}}]}, indent=4)
+        resp = session.post('https://photoslibrary.googleapis.com/v1/mediaItems:batchCreate', create_body).json()
 
-                resp = session.post('https://photoslibrary.googleapis.com/v1/mediaItems:batchCreate', create_body).json()
+        logging.debug("Server response: {}".format(resp))
 
-                logging.debug("Server response: {}".format(resp))
-
-                if "newMediaItemResults" in resp:
-                    status = resp["newMediaItemResults"][0]["status"]
-                    if status.get("code") and (status.get("code") > 0):
-                        logging.error("Could not add \'{0}\' to library -- {1}".format(os.path.basename(photo_file_name), status["message"]))
-                    else:
-                        logging.info("Added \'{}\' to library and album \'{}\' ".format(os.path.basename(photo_file_name), album_name))
-                else:
-                    logging.error("Could not add \'{0}\' to library. Server Response -- {1}".format(os.path.basename(photo_file_name), resp))
-
+        if "newMediaItemResults" in resp:
+            status = resp["newMediaItemResults"][0]["status"]
+            if status.get("code") and (status.get("code") > 0):
+                logging.error("Could not add \'{0}\' to library -- {1}".format(os.path.basename(photo_file_name), status["message"]))
             else:
-                logging.error("Could not upload \'{0}\'. Server Response - {1}".format(os.path.basename(photo_file_name), upload_token))
+                logging.info("Added \'{}\' to library and album \'{}\' ".format(os.path.basename(photo_file_name), album_name))
+        else:
+            logging.error("Could not add \'{0}\' to library. Server Response -- {1}".format(os.path.basename(photo_file_name), resp))
+
+    else:
+        logging.error("Could not upload \'{0}\'. Server Response - {1}".format(os.path.basename(photo_file_name), upload_token))
 
     try:
         del(session.headers["Content-type"])
@@ -176,14 +173,7 @@ def upload_photos(session, photo_file_list, album_name):
     except KeyError:
         pass
 
-def main():
-
-    args = parse_args()
-
-    logging.basicConfig(format='%(asctime)s %(module)s.%(funcName)s:%(levelname)s:%(message)s',
-                    datefmt='%m/%d/%Y %I_%M_%S %p',
-                    filename='upload.log',
-                    level=logging.INFO)
+def fileUpload(filename):
 
     home_dir = os.path.expanduser('~')
     credential_dir = os.path.join(home_dir, '.credentials')
@@ -196,14 +186,4 @@ def main():
 
     session = get_authorized_session(auth_file)
 
-    upload_photos(session, args.photos, album_name)
-
-    # As a quick status check, dump the albums and their key attributes
-
-    #print("{:<50} | {:>8} | {} ".format("PHOTO ALBUM","# PHOTOS", "IS WRITEABLE?"))
-
-    #for a in getAlbums(session):
-    #    print("{:<50} | {:>8} | {} ".format(a["title"],a.get("mediaItemsCount", "0"), str(a.get("isWriteable", False))))
-
-if __name__ == '__main__':
-  main()
+    upload_photos(session, filename, album_name)

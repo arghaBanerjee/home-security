@@ -10,11 +10,12 @@ from email.mime.text import MIMEText
 import mimetypes
 
 import httplib2
-from apiclient import discovery
+from googleapiclient import discovery
 from googleapiclient import errors
 from oauth2client import client
 from oauth2client import tools
 from oauth2client.file import Storage
+import logging
 
 try:
     import argparse
@@ -136,8 +137,13 @@ def create_message_with_attachment(sender, to, subject, message_text, file_dir,
 
   return {'raw': (base64.urlsafe_b64encode(message.as_bytes()).decode())}
 
+def parse_args(arg_input=None):
+    parser = argparse.ArgumentParser(description='Upload photos to Google Photos.')
+    parser.add_argument('photos', metavar='photo',type=str, nargs='*',
+                    help='filename of a photo to upload')
+    return parser.parse_args(arg_input)
 
-def main():
+def send(filename):
     """Shows basic usage of the Gmail API.
 
     Creates a Gmail API service object and outputs a list of label names
@@ -145,16 +151,12 @@ def main():
     """
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
-    service = discovery.build('gmail', 'v1', http=http)
+    service = discovery.build('gmail', 'v1', http=http, cache_discovery=False)
 
     current_dirpath = os.getcwd()
 
-    msg = create_message_with_attachment(sender,to,subject,message_text,current_dirpath,'1.jpg')
+    msg = create_message_with_attachment(sender,to,subject,message_text,current_dirpath, filename)
     message = (service.users().messages().send(userId=user_id, body=msg)
                .execute())
     print('Message Id: {}'.format(message['id']))
-
-
-
-if __name__ == '__main__':
-    main()
+    logging.info("Email Message Id:  -- \'{}\'".format(message['id']))
