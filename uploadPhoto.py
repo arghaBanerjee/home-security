@@ -183,4 +183,7 @@ def fileUpload(filename):
 
     session = get_authorized_session(auth_file)
 
-    upload_photos(session, filename, album_name)
+    file_directory = parser.get('file', 'folder')
+    filePath = os.path.join(home_dir,file_directory,filename)
+    
+    upload_photos(session, filePath, album_name)

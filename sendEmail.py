@@ -1,5 +1,5 @@
 import base64
-import os
+import os.path
 from email.mime.audio import MIMEAudio
 from email.mime.base import MIMEBase
 from email.mime.image import MIMEImage
@@ -100,7 +100,8 @@ def create_message_with_attachment(sender, to, subject, message_text, file_dir,
   msg = MIMEText(message_text)
   message.attach(msg)
 
-  path = os.path.join(file_dir, filename)
+  home_dir = os.path.expanduser('~')
+  path = os.path.join(home_dir,file_dir, filename)
   content_type, encoding = mimetypes.guess_type(path)
 
   if content_type is None or encoding is not None:
@@ -140,8 +141,6 @@ def send(filename):
     http = credentials.authorize(httplib2.Http())
     service = discovery.build('gmail', 'v1', http=http, cache_discovery=False)
 
-    current_dirpath = os.getcwd()
-
     parser = ConfigParser()
     parser.read('configuration.properties')
 
@@ -151,7 +150,9 @@ def send(filename):
     message_text = parser.get('gmail', 'message_text')
     user_id = parser.get('gmail', 'user_id')
 
-    msg = create_message_with_attachment(sender,to,subject,message_text,current_dirpath, filename)
+    file_directory = parser.get('file', 'folder')
+
+    msg = create_message_with_attachment(sender,to,subject,message_text,file_directory, filename)
     message = (service.users().messages().send(userId=user_id, body=msg)
                .execute())
     logging.info("Email Sent! Message Id:  -- \'{}\'".format(message['id']))
