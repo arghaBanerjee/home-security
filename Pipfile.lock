@@ -18,8 +18,7 @@
     "default": {
         "apiclient": {
             "hashes": [
-                "sha256:49d1b5a6eb36281461a931243c142ea57cffcfd125ae399bf59421cccf6836c4",
-                "sha256:e97b1bb13646df12284a8915c99728f380fb9a3edbeb2c20927cf47afd73d0ac"
+                "sha256:6fe6e51eef2cf54baeee90b616d48295b3d48bf703aaa290dfd430d374eb7431"
             ],
             "index": "pypi",
             "version": "==1.0.3"
@@ -85,7 +84,7 @@
         },
         "httplib2": {
             "hashes": [
-                "sha256:f61fb838a94ce3b349aa32c92fd8430f7e3511afdb18bf9640d647e30c90a6d6"
+                "sha256:c3232dbdda3c30966b97bed348d7847fcd5c35d095580a46c8b2e3a62b67d7fb"
             ],
             "index": "pypi",
             "version": "==0.12.0"
@@ -114,7 +113,7 @@
         },
         "picamera": {
             "hashes": [
-                "sha256:890815aa01e4d855a6a95dd3ad0953b872a6b954982106407df0c5a31a163e50"
+                "sha256:142ab2073c0d455666fd2aa99bf6b4fc8b121e5027ef6482addec2fba7d7aa15"
             ],
             "index": "pypi",
             "version": "==1.13"
