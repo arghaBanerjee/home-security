@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "cabe7b9d2b588b53afe9eccf8f65a69da1b48f5865803d7d8f0a3f3555e110de"
+            "sha256": "2c98882350e3768752c1b88a5727fae8a80b2be998d07ccf7cb2a95c9fdbca5c"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -20,7 +20,7 @@
             "hashes": [
                 "sha256:49d1b5a6eb36281461a931243c142ea57cffcfd125ae399bf59421cccf6836c4",
                 "sha256:e97b1bb13646df12284a8915c99728f380fb9a3edbeb2c20927cf47afd73d0ac",
-		"sha256:6fe6e51eef2cf54baeee90b616d48295b3d48bf703aaa290dfd430d374eb7431"
+                "sha256:6fe6e51eef2cf54baeee90b616d48295b3d48bf703aaa290dfd430d374eb7431"
             ],
             "index": "pypi",
             "version": "==1.0.3"
@@ -76,10 +76,18 @@
             "index": "pypi",
             "version": "==0.2.0"
         },
+        "gpiozero": {
+            "hashes": [
+                "sha256:1ea5b582ceaf98b33914c60916a56651d8b187e33642aa77b15df33909a228c8",
+                "sha256:b4b074e56dea12c21b05e6feef792719a392a245f5e685bc56be3dc2546f8609"
+            ],
+            "index": "pypi",
+            "version": "==1.4.1"
+        },
         "httplib2": {
             "hashes": [
                 "sha256:f61fb838a94ce3b349aa32c92fd8430f7e3511afdb18bf9640d647e30c90a6d6",
-		"sha256:c3232dbdda3c30966b97bed348d7847fcd5c35d095580a46c8b2e3a62b67d7fb"
+                "sha256:c3232dbdda3c30966b97bed348d7847fcd5c35d095580a46c8b2e3a62b67d7fb"
             ],
             "index": "pypi",
             "version": "==0.12.0"
@@ -115,10 +123,10 @@
         },
         "pyasn1-modules": {
             "hashes": [
-                "sha256:a0cf3e1842e7c60fde97cb22d275eb6f9524f5c5250489e292529de841417547",
-                "sha256:a38a8811ea784c0136abfdba73963876328f66172db21a05a82f9515909bfb4e"
+                "sha256:642afdabb681d39f5948fd5477764d94faf17ce40e5691e9998b52815fbb4e71",
+                "sha256:d14fcb29dabecba3d7b360bf72327c26c385248a5d603cf6be5f566ce999b261"
             ],
-            "version": "==0.2.2"
+            "version": "==0.2.3"
         },
         "requests": {
             "hashes": [

@@ -1,6 +1,10 @@
+from __future__ import print_function
 import logging
 import uploadPhoto
 import sendEmail
+from gpiozero import MotionSensor
+from picamera import PiCamera
+from random import *
 
 def main():
 
@@ -9,15 +13,35 @@ def main():
                     filename='home-security.log',
                     level=logging.DEBUG)
 
-    fileName = '3.jpg'
+    pir = MotionSensor(4)
 
-    logging.info("Start to uplaod File:  -- \'{}\'".format(fileName))
+    camera = PiCamera()
 
-    uploadPhoto.fileUpload(fileName)
+    while True:
 
-    sendEmail.send(fileName)
+        fileName = 'file-' + str(randint(1, 9999)) + '.jpg'
+        print('Filename: ', fileName)
 
-    logging.info("Completed sending Email!")
+        pir.wait_for_motion()
+        print('Motion detected!')
+
+        camera.start_preview()
+        sleep(2)
+        camera.capture('/home/pi/camera-files/%s' % fileName)
+        camera.stop_preview()
+        print('Image captured!')
+
+        logging.info("Start to uplaod File:  -- \'{}\'".format(fileName))
+
+        uploadPhoto.fileUpload(fileName)
+        print('Image Uploaded!')
+
+        sendEmail.send(fileName)
+        print('Image Send to Email!')
+
+        logging.info("Completed sending Email!")
+        pir.wait_for_no_motion()
+        print('No Motion!')
 
 
 if __name__ == '__main__':

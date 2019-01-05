@@ -9,6 +9,7 @@ httplib2 = "*"
 oauth2client = "*"
 apiclient = "*"
 google-api-python-client = "*"
+gpiozero = "*"
 
 [dev-packages]
 
