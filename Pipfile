@@ -10,6 +10,7 @@ oauth2client = "*"
 apiclient = "*"
 google-api-python-client = "*"
 gpiozero = "*"
+picamera = "*"
 
 [dev-packages]
 
