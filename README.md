@@ -20,4 +20,7 @@ Using Camera Module for enhanced security when not at Home
 3. Change to the directory where you installed this script
 4. Run `pipenv install` to download and install all the dependencies
 5. Run `pipenv shell` to open a shell with all the dependencies available (you'll need to do this every time you want to run the script)
-6. Now run the script
+6. Now run the script `python main.py`
+
+**NOTE**
+If there are existing api credential files under the folder /home/pi/.credentials for example email-credential.json, photo-credential.json please delete them as the google api tokens are likely to expire and needs to be refreshed (if running the program after a longtime).
