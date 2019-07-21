@@ -7,10 +7,11 @@ name = "pypi"
 google-auth-oauthlib = "*"
 httplib2 = "*"
 oauth2client = "*"
-apiclient = "*"
+apiclient = "==1.0.3"
 google-api-python-client = "*"
 gpiozero = "*"
 picamera = "*"
+urllib3 = ">=1.24.2"
 
 [dev-packages]
 
