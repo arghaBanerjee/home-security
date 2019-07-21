@@ -16,11 +16,14 @@ Using Camera Module for enhanced security when not at Home
 ### Installing dependencies and running the script
 
 1. Make sure you have [Python 3.7](https://www.python.org/downloads/) installed on your system
-2. If needed, install [pipenv]
-3. Change to the directory where you installed this script
-4. Run `pipenv install` to download and install all the dependencies
-5. Run `pipenv shell` to open a shell with all the dependencies available (you'll need to do this every time you want to run the script)
-6. Now run the script `python main.py`
+2. Also, install [pipenv] (if not already present)
+
+### Running the application
+1. Clone the repo in your machine `git clone <repo_url>`
+2. Goto project root `cd <project_name>`
+3. Update the client_id.json file with your <YOUR_CLIENT_ID> and <YOUR_CLIENT_SECRET>
+4. Give permission to execute the script start.sh `chmod 777 start.sh`
+5. Run the start script to launch the application `./start.sh`
 
 **NOTE**
 If there are existing api credential files under the folder /home/pi/.credentials for example email-credential.json, photo-credential.json please delete them as the google api tokens are likely to expire and needs to be refreshed (if running the program after a longtime).
