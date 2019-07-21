@@ -19,9 +19,9 @@ Using Pi Camera Module and Infrared Motion Sensor (PIR Sensor) for enhanced secu
 2. Also, install [pipenv] (if not already installed)
 
 ### Running the Application
-1. Clone the repo on your machine `git clone https://github.com/arghaBanerjee/home-security.git`
+1. Clone the repo on your machine `git clone git@github.com:arghaBanerjee/home-security.git`
 2. Goto project root directory `cd home-security`
-3. Update the client_id.json file with your <YOUR_CLIENT_ID> and <YOUR_CLIENT_SECRET>
+3. Update the client_id.json file with your `<YOUR_CLIENT_ID>` and `<YOUR_CLIENT_SECRET>`
 4. Give permission to execute the script start.sh `chmod 777 start.sh`
 5. Run the start script to launch the application `./start.sh`
 
