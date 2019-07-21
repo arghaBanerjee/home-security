@@ -1,6 +1,6 @@
 # home-security
 Home security project with Rasberry Pi3 Model B+
-Using Camera Module for enhanced security when not at Home 
+Using Pi Camera Module and Infrared Motion Sensor (PIR Sensor) for enhanced security when not at Home 
 
 ## Setup
 
@@ -13,14 +13,14 @@ Using Camera Module for enhanced security when not at Home
 2. Replace `YOUR_CLIENT_ID` in the client_id.json file with the provided Client ID.
 3. Replace `YOUR_CLIENT_SECRET` in the client_id.json file wiht the provided Client Secret.
 
-### Installing dependencies and running the script
+### Required Installations
 
-1. Make sure you have [Python 3.7](https://www.python.org/downloads/) installed on your system
-2. Also, install [pipenv] (if not already present)
+1. Make sure you have [Python 3.7] (https://www.python.org/downloads/) installed on your system
+2. Also, install [pipenv] (if not already installed)
 
-### Running the application
-1. Clone the repo in your machine `git clone <repo_url>`
-2. Goto project root `cd <project_name>`
+### Running the Application
+1. Clone the repo on your machine `git clone https://github.com/arghaBanerjee/home-security.git`
+2. Goto project root directory `cd home-security`
 3. Update the client_id.json file with your <YOUR_CLIENT_ID> and <YOUR_CLIENT_SECRET>
 4. Give permission to execute the script start.sh `chmod 777 start.sh`
 5. Run the start script to launch the application `./start.sh`
