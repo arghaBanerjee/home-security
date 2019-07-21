@@ -27,3 +27,6 @@ Using Pi Camera Module and Infrared Motion Sensor (PIR Sensor) for enhanced secu
 
 **NOTE**
 If there are existing api credential files under the folder /home/pi/.credentials for example email-credential.json, photo-credential.json please delete them as the google api tokens are likely to expire and needs to be refreshed (if running the program after a longtime).
+
+**NOTE**
+If you are running the application for the first time or after deleting the credential tokens under the folder /home/pi/.credentials then you will be redirected to a browser page where you have to give permission to allow the app to connect to google services like gmail and photos. You will have to click on advanced link and then allow your app to connect to the google services using your google account. This will be a one time operation only.
